@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -63,10 +64,22 @@ namespace IDisttributedCacheRedis.Controllers
         public IActionResult GetComplexType()
         {
             var data = _cache.GetString("product:1");
-            List<Product> p=JsonConvert.DeserializeObject<List<Product>>(data);
+            List<Product> p = JsonConvert.DeserializeObject<List<Product>>(data);
             ViewBag.list = p;
             return View();
         }
         #endregion
+        public IActionResult ImageCache()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/download.jpg");
+            byte[] ImageByte = System.IO.File.ReadAllBytes(path);
+            _cache.Set("resim", ImageByte);
+            return View();
+        }
+        public IActionResult ImageUrl()
+        {
+            byte[] resimByte = _cache.Get("resim");
+            return File(resimByte, "image/jpg");
+        }
     }
 }
