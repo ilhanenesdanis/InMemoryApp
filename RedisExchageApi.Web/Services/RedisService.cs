@@ -11,7 +11,7 @@ namespace RedisExchageApi.Web.Services
         public IDatabase db { get; set; }
         public RedisService(IConfiguration configuration)
         {
-            _redisHost = configuration["Redis:Redis"];
+            _redisHost = configuration["Redis:Host"];
             _redisPort = configuration["Redis:Port"];
 
         }
